@@ -11,7 +11,7 @@
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Suspend the execution until a process specified by pid argument has changed state");
+    parser().setDescription("Suspend the execution until a process specified by pid argument has changed state or finished running");
     parser().registerPositional("PROCESS_ID", "Suspend execution until the given pid process changes state");
 }
 

@@ -1,36 +1,35 @@
-#include <iostream>
-#include <sys/types.h>
 #include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <unistd.h>
-#include <cstdlib>
+#include <ProcessClient.h>
+#include "Wait.h"
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <pid>" << std::endl;
-        return 1;
-    }
+Wait::Wait(int argc, char **argv)
+    : POSIXApplication(argc, argv)
+{
+    parser().setDescription("Suspend the execution of the thread until a child specified by pid argument has changed state");
+    parser().registerPositional("PROCESS_ID", "Suspend execution until the given pid argument changes state");
+}
 
-    // Convert the provided PID argument to an integer
-    int pid = std::atoi(argv[1]);
+Wait::~Wait(){}
 
-    // Use waitpid to wait for the specified process to finish
-    int status;
-    int result = waitpid(pid, &status, 0);
+Wait::Result Wait::exec()
+{
+    const ProcessClient process;
+    ProcessID pid = (atoi(arguments().get("Process_ID")));
 
-    if (result == -1) {
-        perror("waitpid");
-        return 1;
-    }
+    ProcessClient::Info info;
+    const ProcessClient::Result result = process.processInfo(pid, info);
 
-    if (WIFEXITED(status)) {
-        int exit_status = WEXITSTATUS(status);
-        std::cout << "Process " << pid << " has exited with status " << exit_status << std::endl;
-    } else if (WIFSIGNALED(status)) {
-        int term_signal = WTERMSIG(status);
-        std::cout << "Process " << pid << " terminated by signal " << term_signal << std::endl;
+    if (result == ProcessClient::Success) {
+        waitpid(pid, 0, 0);
     } else {
-        std::cerr << "Process " << pid << " encountered an unknown status" << std::endl;
+        ERROR("No process of ID " << arguments().get("PROCESS_ID") << " is found.")
+        return InvalidArgument;
     }
 
-    return 0;
+    return Success;
 }

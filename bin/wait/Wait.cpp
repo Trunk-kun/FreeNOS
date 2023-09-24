@@ -22,7 +22,7 @@ Wait::Result Wait::exec()
     ProcessID arg_id;
     int store_result, success;
 
-    if ((arg_id = atoi(arguments().get("PROCESS_ID"))) <= 3>) {
+    if ((arg_id = atoi(arguments().get("PROCESS_ID"))) <= 3) {
         ERROR("Invalid PID `" << arguments().get("PROCESS_ID") <<"`");
         return InvalidArgument;
     }

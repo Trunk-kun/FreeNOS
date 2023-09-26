@@ -2,7 +2,7 @@ CS4310 Project 2 - Wait For It
 
 Team Members:
 Tim Hsieh
-Fiona Quach
+Fionna Quach
 Ryan Andrada
 
 Video/Demo Link:

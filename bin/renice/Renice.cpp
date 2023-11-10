@@ -12,10 +12,38 @@ Renice::Renice(int argc, char **argv)
     :POSIXApplication(argc, argv)
 {
     parser().setDescription("Changes the priority of a given process");
+    parser().registerPositional("PRIORITY", "change the priority of the given level");
     parser().registerPositional("PROCESS_ID", "change the priority of a given process");
+    parser().registerFlag('n', "priority", "change priority level");
 }
+
+Renice::~Renice(){}
 
 Renice::Result Renice::exec()
 {
-    // ToDo
+    if(arguments().get("priority")) {
+        const ProcessClient process;
+        ProcessID pid = (atoi(arguments().get("PROCESS_ID")));
+        int priority = (atoi(arguments().get("PRIORITY")));
+
+        ProcessClient::Info info;
+        const ProcessClient::Result result = process.processInfo(pid, info);
+
+        // check that the process exists    
+        if(result != ProcessClient::Success) {
+            ERROR("No process of ID '" << pid << "' is found")
+            return InvalidArgument;
+        }
+
+        // check that the new priority is valid
+        if(priority > 5 || priority < 1) {
+            ERROR("Failed to set priority for process " << pid)
+            return InvalidArgument;
+        }
+
+        renicepid(pid, priority, 0, 0);
+        printf("process %d set to priority %d, from priority %d\n", pid, priority, info.kernelState.priority);
+    }
+
+    return Success;
 }

@@ -154,6 +154,8 @@ class Process
     */
     Priority getPriority();
 
+    void setPriority(int priority);
+
     /**
      * Compare two processes.
      *

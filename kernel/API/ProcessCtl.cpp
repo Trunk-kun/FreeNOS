@@ -204,7 +204,7 @@ Log & operator << (Log &log, ProcessOperation op)
         case DisableIRQ:log.append("DisableIRQ"); break;
         case InfoPID:   log.append("InfoPID"); break;
         case WaitPID:   log.append("WaitPID"); break;
-        case RenicePID  log.append("RenicePID"); break;
+        case RenicePID:  log.append("RenicePID"); break;
         case InfoTimer: log.append("InfoTimer"); break;
         case EnterSleep: log.append("EnterSleep"); break;
         case Schedule:  log.append("Schedule"); break;

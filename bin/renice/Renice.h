@@ -17,3 +17,5 @@ class Renice : public POSIXApplication
 
     virtual Result exec();
 };
+
+#endif

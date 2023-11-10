@@ -26,7 +26,7 @@ ProcessList::ProcessList(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
     parser().setDescription("Output system process list");
-    parser().registerFlag('1', "priority", "Show priority level in list");
+    parser().registerFlag('l', "priority", "Show priority level in list");
 }
 
 ProcessList::Result ProcessList::exec()

@@ -164,11 +164,6 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         // return value and the process exit status is stored in the upper 16 bits.
         return (API::Result) ((API::Success) | (procs->current()->getWaitResult() << 16));
 
-    case RenicePID:
-        proc -> setPriority(addr);
-        procs -> schedule();
-        break;
-
     case InfoTimer:
         if (!(timer = Kernel::instance()->getTimer()))
             return API::NotFound;
@@ -210,7 +205,6 @@ Log & operator << (Log &log, ProcessOperation op)
         case DisableIRQ:log.append("DisableIRQ"); break;
         case InfoPID:   log.append("InfoPID"); break;
         case WaitPID:   log.append("WaitPID"); break;
-        case RenicePID:  log.append("RenicePID"); break;
         case InfoTimer: log.append("InfoTimer"); break;
         case EnterSleep: log.append("EnterSleep"); break;
         case Schedule:  log.append("Schedule"); break;

@@ -108,6 +108,10 @@ void Process::setParent(ProcessID id)
     m_parent = id;
 }
 
+Process::Priority Process::getPriority() {
+    return m_priority;
+}
+
 Process::Result Process::setPriority(int priority)
 {
     if (priority < 1 || priority > 5)

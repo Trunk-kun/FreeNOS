@@ -121,6 +121,10 @@ class Process
      */
     uint getWaitResult() const;
 
+    Priority getPriority();
+
+    Result setPriority(int priority);
+
     /**
      * Get process shares.
      *

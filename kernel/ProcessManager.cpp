@@ -202,12 +202,12 @@ ProcessManager::Result ProcessManager::schedule()
 
 ProcessManager::Result ProcessManager::changePriority(Process *proc, int priority) {
     if(proc->getState() == Process::Ready) {
-        if (proc->setPriority(priority) != Process::Success) {
-            FATAL("FAILED: setting priority of PID " << proc->getID());
-        }
-
         if (m_scheduler->dequeue(proc, true) != Scheduler::Success) {
             FATAL("FAILED: dequeuing PID " << proc->getID());
+        }
+
+        if (proc->setPriority(priority) != Process::Success) {
+            FATAL("FAILED: setting priority of PID " << proc->getID());
         }
 
         if (m_scheduler->enqueue(proc, false) != Scheduler::Success) {

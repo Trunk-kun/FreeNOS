@@ -121,8 +121,6 @@ class Process
      */
     uint getWaitResult() const;
 
-    Priority getPriority();
-
     Result setPriority(int priority);
 
     /**
@@ -157,8 +155,6 @@ class Process
      * Get process priority level
     */
     Priority getPriority();
-
-    void setPriority(int priority);
 
     /**
      * Compare two processes.

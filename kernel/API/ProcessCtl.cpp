@@ -48,6 +48,11 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     // Handle request
     switch (action)
     {
+    case RenicePID:
+        procs->changePriority(proc, addr);
+        procs->schedule();
+        break;
+
     case Spawn:
         proc = procs->create(addr, map);
         if (!proc)
@@ -195,6 +200,7 @@ Log & operator << (Log &log, ProcessOperation op)
 {
     switch (op)
     {
+        case RenicePID: log.append("RenicePID"); break;
         case Spawn:     log.append("Spawn"); break;
         case KillPID:   log.append("KillPID"); break;
         case GetPID:    log.append("GetPID"); break;

@@ -106,6 +106,15 @@ class ProcessManager
     Result schedule();
 
     /**
+    * Alter the priority level of a given process
+    *
+    * @param proc Process pointer
+    * @param priorty Priority level
+    * @return Result code
+    */
+    Result changePriority(Process *proc, int priority);
+
+    /**
      * Let current Process wait for another Process to terminate.
      *
      * @param proc Process pointer

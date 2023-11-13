@@ -200,6 +200,28 @@ ProcessManager::Result ProcessManager::schedule()
     return Success;
 }
 
+ProcessManager::Result ProcessManager::changePriority(Process *proc, int priority) {
+    if(proc->getState() == Process::Ready) {
+        if (proc->setPriority(priority) != Process::Success) {
+            FATAL("FAILED: setting priority of PID " << proc->getID());
+        }
+
+        if (m_scheduler->dequeue(proc, true) != Scheduler::Success) {
+            FATAL("FAILED: dequeuing PID " << proc->getID());
+        }
+
+        if (m_scheduler->enqueue(proc, false) != Scheduler::Success) {
+            FATAL("FAILED: enqueuing PID " << proc->getID());
+        }
+    } else {
+        if (proc->setPriority(priority) != Process::Success) {
+            FATAL("FAILED: setting priority of PID " << proc->getID());
+        }
+    }
+
+    return Success;
+}
+
 Process * ProcessManager::current()
 {
     return m_current;

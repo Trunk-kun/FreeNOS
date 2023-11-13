@@ -48,6 +48,11 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     // Handle request
     switch (action)
     {
+    case RenicePID:
+        procs->changePriority(proc, addr);
+        procs->schedule();
+        break;
+
     case Spawn:
         proc = procs->create(addr, map);
         if (!proc)
@@ -69,6 +74,9 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 
     case GetParent:
         return (API::Result) procs->current()->getParent();
+
+    case GetPriority:
+        return (API::Result) procs->current()->getPriority();
 
     case Schedule:
         procs->schedule();
@@ -135,6 +143,7 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         info->id    = proc->getID();
         info->state = proc->getState();
         info->parent = proc->getParent();
+        info->priority = proc->getPriority();
         break;
 
     case WaitPID:
@@ -186,6 +195,7 @@ Log & operator << (Log &log, ProcessOperation op)
 {
     switch (op)
     {
+        case RenicePID: log.append("RenicePID"); break;
         case Spawn:     log.append("Spawn"); break;
         case KillPID:   log.append("KillPID"); break;
         case GetPID:    log.append("GetPID"); break;
@@ -199,6 +209,7 @@ Log & operator << (Log &log, ProcessOperation op)
         case EnterSleep: log.append("EnterSleep"); break;
         case Schedule:  log.append("Schedule"); break;
         case Wakeup:    log.append("Wakeup"); break;
+        case GetPriority: log.append("GetPriority"); break;
         default:        log.append("???"); break;
     }
     return log;
